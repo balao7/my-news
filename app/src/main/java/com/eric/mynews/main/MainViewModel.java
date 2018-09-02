@@ -8,13 +8,12 @@ import com.eric.mynews.models.NewsResponse;
 import com.eric.mynews.repositories.NewsRepository;
 
 import io.reactivex.Scheduler;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import timber.log.Timber;
 
 public class MainViewModel {
-    @VisibleForTesting static final int NUM_DAYS = 4;
-    private final Scheduler retrofitScheduler;
+    private final Scheduler bgScheduler;
+    private final Scheduler uiScheduler;
     public final MainRVAdapter rvAdapter;
     public final RecyclerView.LayoutManager layoutManager;
     @VisibleForTesting Disposable disposable;
@@ -25,11 +24,13 @@ public class MainViewModel {
     MainViewModel(NewsRepository repository,
                   RecyclerView.LayoutManager layoutManager,
                   MainRVAdapter rvAdapter,
-                  Scheduler retrofitScheduler) {
+                  Scheduler bgScheduler,
+                  Scheduler uiScheduler) {
         this.repository = repository;
         this.layoutManager = layoutManager;
         this.rvAdapter = rvAdapter;
-        this.retrofitScheduler = retrofitScheduler;
+        this.bgScheduler = bgScheduler;
+        this.uiScheduler = uiScheduler;
     }
 
     @VisibleForTesting
@@ -54,17 +55,19 @@ public class MainViewModel {
         isLoading.set(true);
     }
 
-    public void onActivityCreated() {
+    void onActivityCreated() {
         disposable = repository.getNews()
-                .subscribeOn(retrofitScheduler)
-                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe(disposable -> startAnimation())
+                .subscribeOn(bgScheduler)
+                .observeOn(uiScheduler)
                 .subscribe(this::handleSuccess, throwable -> {
                     Timber.e(throwable);
                     handleError();
                 });
     }
 
-    private void handleSuccess(NewsResponse newsResponse) {
+    @VisibleForTesting
+    void handleSuccess(NewsResponse newsResponse) {
         stopAnimation();
         hasError.set(false);
         rvAdapter.update(newsResponse.getArticles());

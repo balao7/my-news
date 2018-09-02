@@ -9,6 +9,7 @@ import com.eric.mynews.repositories.NewsRepository;
 
 import dagger.Module;
 import dagger.Provides;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 @Module
@@ -30,6 +31,6 @@ public class MainActivityModule {
 
     @Provides
     MainViewModel provideViewModel(NewsRepository weatherRepository, RecyclerView.LayoutManager layoutManager, MainRVAdapter rvAdapter) {
-        return new MainViewModel(weatherRepository, layoutManager, rvAdapter, Schedulers.io());
+        return new MainViewModel(weatherRepository, layoutManager, rvAdapter, Schedulers.io(), AndroidSchedulers.mainThread());
     }
 }
