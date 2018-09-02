@@ -5,22 +5,21 @@ import android.databinding.ViewDataBinding;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import com.eric.mynews.R;
 import com.eric.mynews.BR;
+import com.eric.mynews.commands.NewsDetailsCommand;
 import com.eric.mynews.models.Article;
-import com.eric.mynews.routers.NewsDetailsRouter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainRVAdapter extends RecyclerView.Adapter<MainRVAdapter.NewsListItemViewHolder> {
-    private final NewsDetailsRouter router;
+    private final NewsDetailsCommand router;
     private List<Article> newsList = new ArrayList<>();
 
-    public MainRVAdapter(NewsDetailsRouter router) {
+    public MainRVAdapter(NewsDetailsCommand router) {
         this.router = router;
     }
 

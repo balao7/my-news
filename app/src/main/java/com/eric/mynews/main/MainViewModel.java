@@ -3,7 +3,6 @@ package com.eric.mynews.main;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
 import android.databinding.ObservableInt;
-import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.support.annotation.VisibleForTesting;
@@ -12,20 +11,17 @@ import android.support.v7.widget.RecyclerView;
 import com.eric.mynews.MyLocationManager;
 import com.eric.mynews.R;
 import com.eric.mynews.ResourceProvider;
+import com.eric.mynews.commands.BackCommand;
 import com.eric.mynews.models.ForecastDay;
-import com.eric.mynews.models.ForecastResponse;
 import com.eric.mynews.models.NewsResponse;
 import com.eric.mynews.repositories.NewsRepository;
 
-import java.io.IOException;
 import java.util.List;
-import java.util.Locale;
 
 import io.reactivex.Observable;
 import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 import timber.log.Timber;
 
 public class MainViewModel {
@@ -47,14 +43,14 @@ public class MainViewModel {
     public ObservableBoolean isLoading = new ObservableBoolean(true);
     public ObservableBoolean isForecastReady = new ObservableBoolean(false);
 
-    MainViewModel(NewsRepository weatherRepository,
+    MainViewModel(NewsRepository repository,
                   RecyclerView.LayoutManager layoutManager,
                   MainRVAdapter rvAdapter,
                   MyLocationManager locationManager,
                   ResourceProvider resourceProvider,
                   Geocoder geocoder,
                   Scheduler retrofitScheduler) {
-        this.repository = weatherRepository;
+        this.repository = repository;
         this.layoutManager = layoutManager;
         this.rvAdapter = rvAdapter;
         this.locationManager = locationManager;
@@ -64,65 +60,13 @@ public class MainViewModel {
     }
 
     @VisibleForTesting
-    void updateCityName(Location location) {
-        Timber.i("updateCityName - %s", location);
-        try {
-            List<Address> addressList = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-            currentCity.set(addressList.get(0)
-                    .getLocality());
-        } catch (IOException e) {
-            Timber.e(e, "could not get city name");
-            e.printStackTrace();
-        }
-    }
-
-    @VisibleForTesting
-    void handleSuccess(ForecastResponse forecastResponse) {
-        stopAnimation();
-        hasError.set(false);
-        isForecastReady.set(true);
-        currentTemp.set(String.format(Locale.US, resourceProvider.getString(R.string.temp_degree), forecastResponse.getCurrent()
-                .getTempC()));
-        mainTextColour.set(R.color.blue_city_name);
-        mainTextSize.set(R.dimen.text_size_36);
-        forecastDays.set(forecastResponse.getForecast()
-                .getForecastday());
-    }
-
-    @VisibleForTesting
     void handleError() {
         stopAnimation();
         hasError.set(true);
-        currentCity.set(resourceProvider.getString(R.string.error_msg));
-        mainTextColour.set(R.color.white);
-        mainTextSize.set(R.dimen.text_size_54);
     }
 
     public void onActivityDestroyed() {
         if (disposable != null) { disposable.dispose(); }
-    }
-
-    //    @VisibleForTesting
-    //    Single<ForecastResponse> getForecast(Location location) {
-    //        Timber.i("getForecast");
-    //        final String locationStr = String.format(Locale.US, "%f,%f", location.getLatitude(), location.getLongitude());
-    //        return repository.getForecast(locationStr, NUM_DAYS)
-    //                .subscribeOn(retrofitScheduler);
-    //    }
-
-    public void onRetryClicked() {
-        if (disposable != null) { disposable.dispose(); }
-        refreshData();
-    }
-
-    public void refreshData() {
-        //        disposable = observeLocation().doOnSubscribe(disposable -> startAnimation())
-        //                .doOnNext(this::updateCityName)
-        //                .flatMapSingle(this::getForecast)
-        //                .subscribe(this::handleSuccess, throwable -> {
-        //                    Timber.e(throwable);
-        //                    handleError();
-        //                });
     }
 
     @VisibleForTesting
@@ -148,12 +92,10 @@ public class MainViewModel {
         disposable = repository.getNews()
                 .subscribeOn(retrofitScheduler)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<NewsResponse>() {
-                    @Override
-                    public void accept(NewsResponse newsResponse) throws Exception {
-                        handleSuccess(newsResponse);
-                    }
-                }, Timber::d);
+                .subscribe(this::handleSuccess, throwable -> {
+                    Timber.e(throwable);
+                    handleError();
+                });
     }
 
     private void handleSuccess(NewsResponse newsResponse) {

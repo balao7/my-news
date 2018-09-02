@@ -1,4 +1,4 @@
-package com.eric.mynews.routers;
+package com.eric.mynews.commands;
 
 import android.app.Activity;
 
@@ -8,10 +8,10 @@ import com.eric.mynews.models.Article;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 @ParametersAreNonnullByDefault
-public class NewsDetailsRouterImpl implements NewsDetailsRouter {
+public class NewsDetailsCmdImpl implements NewsDetailsCommand {
     private final Activity activity;
 
-    public NewsDetailsRouterImpl(Activity activity) {
+    public NewsDetailsCmdImpl(Activity activity) {
         this.activity = activity;
     }
 

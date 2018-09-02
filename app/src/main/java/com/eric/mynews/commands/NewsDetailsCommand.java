@@ -1,7 +1,7 @@
-package com.eric.mynews.routers;
+package com.eric.mynews.commands;
 
 import com.eric.mynews.models.Article;
 
-public interface NewsDetailsRouter {
+public interface NewsDetailsCommand {
     void gotoDetails(Article news);
 }

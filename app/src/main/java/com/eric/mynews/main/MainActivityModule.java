@@ -6,9 +6,11 @@ import android.support.v7.widget.RecyclerView;
 
 import com.eric.mynews.MyLocationManager;
 import com.eric.mynews.ResourceProvider;
+import com.eric.mynews.commands.BackCommand;
+import com.eric.mynews.commands.BackCommandImpl;
 import com.eric.mynews.repositories.NewsRepository;
-import com.eric.mynews.routers.NewsDetailsRouter;
-import com.eric.mynews.routers.NewsDetailsRouterImpl;
+import com.eric.mynews.commands.NewsDetailsCommand;
+import com.eric.mynews.commands.NewsDetailsCmdImpl;
 
 import dagger.Module;
 import dagger.Provides;
@@ -17,12 +19,12 @@ import io.reactivex.schedulers.Schedulers;
 @Module
 public class MainActivityModule {
     @Provides
-    NewsDetailsRouter provideRouter(MainActivity mainActivity) {
-        return new NewsDetailsRouterImpl(mainActivity);
+    NewsDetailsCommand provideRouter(MainActivity mainActivity) {
+        return new NewsDetailsCmdImpl(mainActivity);
     }
 
     @Provides
-    MainRVAdapter provideRvAdapter(NewsDetailsRouter router) {
+    MainRVAdapter provideRvAdapter(NewsDetailsCommand router) {
         return new MainRVAdapter(router);
     }
 
