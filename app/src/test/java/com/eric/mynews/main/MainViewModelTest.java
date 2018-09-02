@@ -27,7 +27,7 @@ public class MainViewModelTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
-        viewModel = Mockito.spy(new MainViewModel(repository, layoutManager, rvAdapter, Schedulers.trampoline(), Schedulers.trampoline()));
+        viewModel = Mockito.spy(new MainViewModel(repository, localRepo, provideConnManager, layoutManager, rvAdapter, Schedulers.trampoline(), Schedulers.trampoline()));
     }
 
     @Test

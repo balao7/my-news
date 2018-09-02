@@ -3,9 +3,13 @@ package com.eric.mynews.main;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import com.eric.mynews.MyConnectivityManager;
+import com.eric.mynews.MyConnectivityManagerImpl;
 import com.eric.mynews.commands.NewsDetailsCmdImpl;
 import com.eric.mynews.commands.NewsDetailsCommand;
 import com.eric.mynews.repositories.NewsRepository;
+
+import javax.inject.Named;
 
 import dagger.Module;
 import dagger.Provides;
@@ -30,7 +34,17 @@ public class MainActivityModule {
     }
 
     @Provides
-    MainViewModel provideViewModel(NewsRepository weatherRepository, RecyclerView.LayoutManager layoutManager, MainRVAdapter rvAdapter) {
-        return new MainViewModel(weatherRepository, layoutManager, rvAdapter, Schedulers.io(), AndroidSchedulers.mainThread());
+    MyConnectivityManager provideConnManager(MainActivity activity) {
+        return new MyConnectivityManagerImpl(activity);
+    }
+
+    @Provides
+    MainViewModel provideViewModel(@Named("remote") NewsRepository remoteRepository,
+                                   @Named("local") NewsRepository localRepo,
+                                   MyConnectivityManager provideConnManager,
+                                   RecyclerView.LayoutManager layoutManager,
+                                   MainRVAdapter rvAdapter) {
+        return new MainViewModel(remoteRepository, localRepo, provideConnManager, layoutManager, rvAdapter, Schedulers.io(),
+                AndroidSchedulers.mainThread());
     }
 }

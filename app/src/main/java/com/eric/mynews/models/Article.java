@@ -5,9 +5,17 @@ import android.os.Parcelable;
 
 import com.squareup.moshi.Json;
 
-import java.util.Date;
+import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Id;
+import org.greenrobot.greendao.annotation.Index;
 
+import java.util.Date;
+import org.greenrobot.greendao.annotation.Generated;
+
+@Entity
 public class Article implements Parcelable {
+    @Id private Long id;
+
     @Json(name = "author") private String author;
     @Json(name = "title") private String title;
     @Json(name = "description") private String description;
@@ -52,6 +60,38 @@ public class Article implements Parcelable {
         dest.writeLong(this.publishedAt != null ? this.publishedAt.getTime() : -1);
     }
 
+    public Long getId() {
+        return this.id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public void setUrlToImage(String urlToImage) {
+        this.urlToImage = urlToImage;
+    }
+
+    public void setPublishedAt(Date publishedAt) {
+        this.publishedAt = publishedAt;
+    }
+
     public Article() {}
 
     protected Article(Parcel in) {
@@ -62,6 +102,18 @@ public class Article implements Parcelable {
         this.urlToImage = in.readString();
         long tmpPublishedAt = in.readLong();
         this.publishedAt = tmpPublishedAt == -1 ? null : new Date(tmpPublishedAt);
+    }
+
+    @Generated(hash = 1663253903)
+    public Article(Long id, String author, String title, String description,
+            String url, String urlToImage, Date publishedAt) {
+        this.id = id;
+        this.author = author;
+        this.title = title;
+        this.description = description;
+        this.url = url;
+        this.urlToImage = urlToImage;
+        this.publishedAt = publishedAt;
     }
 
     public static final Creator<Article> CREATOR = new Creator<Article>() {
