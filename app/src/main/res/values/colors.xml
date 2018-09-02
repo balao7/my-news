@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="bg_default">#F5F6F7</color>
+    <color name="grey_2a">#2A2a2a</color>
+    <color name="blue_city_name">#556799</color>
+    <color name="grey_4a">#4a4a4a</color>
+    <color name="white">@android:color/white</color>
+    <color name="bg_error">#e85959</color>
+    <color name="grey_41">#414141</color>
+</resources>

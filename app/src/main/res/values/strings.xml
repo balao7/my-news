@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">MyWeather</string>
+    <string name="temp_degree">%s&#176;</string>
+    <string name="temp_degree_c">%s C</string>
+    <string name="cta_retry">Retry</string>
+    <string name="error_msg">Something went wrong at our end!</string>
+</resources>

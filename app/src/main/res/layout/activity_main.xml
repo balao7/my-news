@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.eric.mynews.main.MainViewModel"
+            />
+
+        <import type="com.eric.mynews.R"/>
+
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:bgColourRes="@{vm.hasError? R.color.bg_error: R.color.bg_default}"
+        tools:background="@color/bg_default"
+        tools:context=".main.MainActivity"
+        >
+
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:adapter="@{vm.rvAdapter}"
+            android:background="@android:color/darker_gray"
+            app:setLayoutManager="@{vm.layoutManager}"
+            />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/bg_default"
+            app:visibility="@{vm.isLoading}"
+            tools:visibility="gone"
+            >
+
+            <ImageView
+                android:layout_width="96dp"
+                android:layout_height="96dp"
+                android:layout_gravity="center"
+                android:interpolator="@anim/linear_interpolator"
+                android:src="@drawable/ic_cached_black_24dp"
+                android:tint="@color/grey_41"
+                app:isLoading="@{vm.isLoading}"
+                />
+        </FrameLayout>
+
+    </android.support.constraint.ConstraintLayout>
+</layout>
