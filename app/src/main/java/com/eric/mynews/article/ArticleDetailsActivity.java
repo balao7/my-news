@@ -4,11 +4,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import com.eric.mynews.R;
 import com.eric.mynews.BR;
+import com.eric.mynews.R;
 import com.eric.mynews.models.Article;
 
 import javax.annotation.Nullable;

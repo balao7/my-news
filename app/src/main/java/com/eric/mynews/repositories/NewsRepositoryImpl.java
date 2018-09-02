@@ -2,7 +2,6 @@ package com.eric.mynews.repositories;
 
 import android.support.annotation.NonNull;
 
-import com.eric.mynews.models.ForecastResponse;
 import com.eric.mynews.models.NewsResponse;
 import com.eric.mynews.rest.NewsApi;
 

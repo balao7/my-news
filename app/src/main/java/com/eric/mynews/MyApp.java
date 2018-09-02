@@ -1,7 +1,5 @@
 package com.eric.mynews;
 
-import android.app.Application;
-
 import dagger.android.AndroidInjector;
 import dagger.android.DaggerApplication;
 import timber.log.Timber;

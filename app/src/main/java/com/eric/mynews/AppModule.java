@@ -1,9 +1,5 @@
 package com.eric.mynews;
 
-import android.location.Geocoder;
-
-import java.util.Locale;
-
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -14,7 +10,7 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-@Module(includes = {RepositoryModule.class, LocationModule.class})
+@Module(includes = {RepositoryModule.class})
 public class AppModule {
     @Provides
     @Singleton
@@ -25,17 +21,5 @@ public class AppModule {
         return new Retrofit.Builder().client(client)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create());
-    }
-
-    @Provides
-    @Singleton
-    ResourceProvider provideResourceProvider(MyApp myApp) {
-        return new ResourceProviderImpl(myApp);
-    }
-
-    @Provides
-    @Singleton
-    Geocoder provideGeocoder(MyApp myApp) {
-        return new Geocoder(myApp, Locale.getDefault());
     }
 }
