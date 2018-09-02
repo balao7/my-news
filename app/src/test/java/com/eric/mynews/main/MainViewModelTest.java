@@ -116,7 +116,6 @@ public class MainViewModelTest {
     @Test
     public void startAnimation() {
         viewModel.startAnimation();
-        ;
 
         Assert.assertTrue(viewModel.isLoading.get());
     }

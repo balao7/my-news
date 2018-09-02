@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'org.greenrobot.greendao' // apply plugin
 
 android {
     compileSdkVersion 27
@@ -46,9 +47,8 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.10.0'
-//    implementation 'com.google.code.gson:gson:2.8.5'
-//    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
     implementation 'com.squareup.retrofit2:converter-moshi:2.4.0'
+    implementation 'com.squareup.moshi:moshi-adapters:1.5.0'
     testImplementation 'org.mockito:mockito-core:2.13.0'
     implementation 'com.android.support.test.espresso:espresso-idling-resource:3.0.2'
     implementation 'com.google.dagger:dagger:2.15'
@@ -63,5 +63,5 @@ dependencies {
     implementation 'com.android.support:design:27.1.1'
     implementation 'com.github.bumptech.glide:glide:4.8.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
-//    androidTestImplementation('com.schibsted.spain:barista:2.5.0')
+    implementation 'org.greenrobot:greendao:3.2.2' // add library
 }

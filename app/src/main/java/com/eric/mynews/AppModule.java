@@ -1,5 +1,10 @@
 package com.eric.mynews;
 
+import com.squareup.moshi.Moshi;
+import com.squareup.moshi.Rfc3339DateJsonAdapter;
+
+import java.util.Date;
+
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -19,8 +24,10 @@ public class AppModule {
         if (BuildConfig.DEBUG) {
             okHttpBuilder.addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY));
         }
+        final Moshi moshi = new Moshi.Builder().add(Date.class, new Rfc3339DateJsonAdapter().nullSafe())
+                .build();
         return new Retrofit.Builder().client(okHttpBuilder.build())
-                .addConverterFactory(MoshiConverterFactory.create())
+                .addConverterFactory(MoshiConverterFactory.create(moshi))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create());
     }
 }
