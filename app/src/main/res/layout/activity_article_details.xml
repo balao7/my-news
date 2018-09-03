@@ -70,12 +70,23 @@
                 />
 
             <TextView
+                android:id="@+id/tv_article_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="16dp"
                 android:text="@{vm.article.description}"
                 android:textColor="@android:color/black"
                 app:layout_constraintTop_toBottomOf="@id/iv_article_image"
+                />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="@{() -> vm.onClickViewFull()}"
+                android:text="@string/cta_view_full"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_article_content"
                 />
 
         </android.support.constraint.ConstraintLayout>
