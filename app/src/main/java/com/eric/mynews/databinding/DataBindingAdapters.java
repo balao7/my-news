@@ -13,8 +13,11 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import timber.log.Timber;
 
+@ParametersAreNonnullByDefault
 public class DataBindingAdapters {
     @BindingAdapter({"bgColourRes"})
     public static void setBackgroundColorRes(View view, @ColorRes int color) {

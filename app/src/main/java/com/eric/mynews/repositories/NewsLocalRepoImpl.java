@@ -2,50 +2,34 @@ package com.eric.mynews.repositories;
 
 import com.eric.mynews.models.Article;
 import com.eric.mynews.models.ArticleDao;
-import com.eric.mynews.models.DaoSession;
-import com.eric.mynews.models.NewsResponse;
 
 import org.greenrobot.greendao.AbstractDaoSession;
 
-import java.util.Comparator;
 import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.function.ToLongFunction;
+
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import io.reactivex.Completable;
-import io.reactivex.Flowable;
 import io.reactivex.Single;
 import timber.log.Timber;
 
-public class NewsLocalRepoImpl {
+@ParametersAreNonnullByDefault
+public class NewsLocalRepoImpl implements NewsRepository {
     private final AbstractDaoSession daoSession;
 
     public NewsLocalRepoImpl(AbstractDaoSession daoSession) {
         this.daoSession = daoSession;
     }
 
+    @Override
     public Single<List<Article>> getNews() {
-        Timber.i("loading news from local db");
-        return Single.fromCallable(new Callable<List<Article>>() {
-            @Override
-            public List<Article> call() throws Exception {
-                return daoSession.queryBuilder(Article.class)
-                        .orderDesc(ArticleDao.Properties.PublishedAt)
-                        .list();
-            }
-        });
-    }
-
-    public Completable insertNews(Article article) {
-        return Completable.fromCallable(new Callable<Long>() {
-            @Override
-            public Long call() throws Exception {
-                return daoSession.insert(article);
-            }
-        });
+        Timber.i("getNews");
+        return Single.fromCallable(() -> daoSession.queryBuilder(Article.class)
+                .orderDesc(ArticleDao.Properties.PublishedAt)
+                .list());
     }
 
     public Completable insertOrReplace(Article article) {
-        return Completable.fromCallable((Callable<Long>) () -> daoSession.insertOrReplace(article));
+        return Completable.fromCallable(() -> daoSession.insertOrReplace(article));
     }
 }

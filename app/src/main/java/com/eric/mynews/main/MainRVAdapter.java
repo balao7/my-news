@@ -15,6 +15,9 @@ import com.eric.mynews.models.Article;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
+@ParametersAreNonnullByDefault
 public class MainRVAdapter extends RecyclerView.Adapter<MainRVAdapter.NewsListItemViewHolder> {
     private final NewsDetailsCommand router;
     private List<Article> newsList = new ArrayList<>();
@@ -25,14 +28,14 @@ public class MainRVAdapter extends RecyclerView.Adapter<MainRVAdapter.NewsListIt
 
     @NonNull
     @Override
-    public NewsListItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public NewsListItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         ViewDataBinding binding = DataBindingUtil.inflate(layoutInflater, R.layout.list_item_news, parent, false);
         return new NewsListItemViewHolder(binding);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull NewsListItemViewHolder holder, int position) {
+    public void onBindViewHolder(NewsListItemViewHolder holder, int position) {
         final Article news = newsList.get(position);
         holder.bind(news);
         holder.itemView.setOnClickListener(v -> router.gotoDetails(news));
@@ -48,6 +51,7 @@ public class MainRVAdapter extends RecyclerView.Adapter<MainRVAdapter.NewsListIt
         notifyDataSetChanged();
     }
 
+    @ParametersAreNonnullByDefault
     static class NewsListItemViewHolder extends RecyclerView.ViewHolder {
 
         private final ViewDataBinding binding;

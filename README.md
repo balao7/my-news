@@ -1,2 +1,5 @@
-Just realised that LocationManager has become a deprecated way to get the user location.
-Changing it to using Google Play Services shouldn't be difficult though.
+# Things to improve
+1. Pagination
+2. Assumptions made here: Sort order by "publishedAt" is desired + we want to prevent articles with the same titles showing that I care and I can take care of the ordering
+- Depending on the context and product requirements these assumptions might not hold e.g. relevancy is more desirable. Attempt to prevent duplicates by titles slows down DB write operation while yielding little benefit (many news from many different sources are produced so quickly it doesn't really matter if are a couple of duplicates in the stream)
+3. For a news reader like this, it might make sense to only keep a fixed amount of articles at all times in local DB. This will make it very easy to retain all article list in the Activity's state on onSaveInstanceState() or libraries like Icepick, creating great user experience for device rotation

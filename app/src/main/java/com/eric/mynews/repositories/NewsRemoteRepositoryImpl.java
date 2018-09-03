@@ -1,25 +1,27 @@
 package com.eric.mynews.repositories;
 
-import android.support.annotation.NonNull;
-
 import com.eric.mynews.models.Article;
 import com.eric.mynews.models.NewsResponse;
 import com.eric.mynews.rest.NewsApi;
 
 import java.util.List;
 
-import io.reactivex.Single;
-import io.reactivex.functions.Function;
+import javax.annotation.ParametersAreNonnullByDefault;
 
-public class NewsRepositoryImpl implements NewsRepository {
+import io.reactivex.Single;
+import timber.log.Timber;
+
+@ParametersAreNonnullByDefault
+public class NewsRemoteRepositoryImpl implements NewsRepository {
     private final NewsApi api;
 
-    public NewsRepositoryImpl(@NonNull NewsApi api) {
+    public NewsRemoteRepositoryImpl(NewsApi api) {
         this.api = api;
     }
 
     @Override
     public Single<List<Article>> getNews() {
+        Timber.i("getNews");
         return api.getNews()
                 .map(NewsResponse::getArticles);
     }

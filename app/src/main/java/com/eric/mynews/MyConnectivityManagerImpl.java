@@ -4,6 +4,9 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
+@ParametersAreNonnullByDefault
 public class MyConnectivityManagerImpl implements MyConnectivityManager {
     private final ConnectivityManager connectivityManager;
 
