@@ -7,8 +7,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
-import com.eric.mynews.R;
 import com.eric.mynews.BR;
+import com.eric.mynews.R;
 import com.eric.mynews.commands.NewsDetailsCommand;
 import com.eric.mynews.models.Article;
 
@@ -19,7 +19,7 @@ public class MainRVAdapter extends RecyclerView.Adapter<MainRVAdapter.NewsListIt
     private final NewsDetailsCommand router;
     private List<Article> newsList = new ArrayList<>();
 
-    public MainRVAdapter(NewsDetailsCommand router) {
+    MainRVAdapter(NewsDetailsCommand router) {
         this.router = router;
     }
 
@@ -52,12 +52,12 @@ public class MainRVAdapter extends RecyclerView.Adapter<MainRVAdapter.NewsListIt
 
         private final ViewDataBinding binding;
 
-        public NewsListItemViewHolder(ViewDataBinding binding) {
+        NewsListItemViewHolder(ViewDataBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }
 
-        public void bind(Article object) {
+        void bind(Article object) {
             binding.setVariable(BR.article, object);
             binding.executePendingBindings();
         }

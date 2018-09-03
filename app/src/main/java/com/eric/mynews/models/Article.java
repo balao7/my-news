@@ -6,13 +6,13 @@ import android.os.Parcelable;
 import com.squareup.moshi.Json;
 
 import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Index;
 
 import java.util.Date;
-import org.greenrobot.greendao.annotation.Generated;
 
-@Entity
+@Entity(indexes = {@Index(value = "title", unique = true)})
 public class Article implements Parcelable {
     @Id private Long id;
 
@@ -105,8 +105,7 @@ public class Article implements Parcelable {
     }
 
     @Generated(hash = 1663253903)
-    public Article(Long id, String author, String title, String description,
-            String url, String urlToImage, Date publishedAt) {
+    public Article(Long id, String author, String title, String description, String url, String urlToImage, Date publishedAt) {
         this.id = id;
         this.author = author;
         this.title = title;

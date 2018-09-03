@@ -28,7 +28,6 @@ public class RepositoryModule {
     }
 
     @Singleton
-    @Named("remote")
     @Provides
     NewsRepository provideRepository(Retrofit.Builder builder) {
         return new NewsRepositoryImpl(builder.baseUrl(BuildConfig.API_BASE)
@@ -37,9 +36,8 @@ public class RepositoryModule {
     }
 
     @Singleton
-    @Named("local")
     @Provides
-    NewsRepository provideLocalRepository(AbstractDaoSession daoSession) {
+    NewsLocalRepoImpl provideLocalRepository(AbstractDaoSession daoSession) {
         return new NewsLocalRepoImpl(daoSession);
     }
 }

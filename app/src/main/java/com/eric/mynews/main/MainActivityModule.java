@@ -7,6 +7,7 @@ import com.eric.mynews.MyConnectivityManager;
 import com.eric.mynews.MyConnectivityManagerImpl;
 import com.eric.mynews.commands.NewsDetailsCmdImpl;
 import com.eric.mynews.commands.NewsDetailsCommand;
+import com.eric.mynews.repositories.NewsLocalRepoImpl;
 import com.eric.mynews.repositories.NewsRepository;
 
 import javax.inject.Named;
@@ -39,8 +40,8 @@ public class MainActivityModule {
     }
 
     @Provides
-    MainViewModel provideViewModel(@Named("remote") NewsRepository remoteRepository,
-                                   @Named("local") NewsRepository localRepo,
+    MainViewModel provideViewModel(NewsRepository remoteRepository,
+                                   NewsLocalRepoImpl localRepo,
                                    MyConnectivityManager provideConnManager,
                                    RecyclerView.LayoutManager layoutManager,
                                    MainRVAdapter rvAdapter) {

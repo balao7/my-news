@@ -7,11 +7,20 @@ import android.support.v7.widget.RecyclerView;
 import com.eric.mynews.MyConnectivityManager;
 import com.eric.mynews.models.Article;
 import com.eric.mynews.models.NewsResponse;
+import com.eric.mynews.repositories.NewsLocalRepoImpl;
 import com.eric.mynews.repositories.NewsRepository;
 
+import java.util.List;
+
+import io.reactivex.CompletableSource;
+import io.reactivex.Observable;
 import io.reactivex.Scheduler;
 import io.reactivex.Single;
+import io.reactivex.SingleSource;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
+import io.reactivex.internal.functions.Functions;
 import timber.log.Timber;
 
 public class MainViewModel {
@@ -19,7 +28,7 @@ public class MainViewModel {
     private final Scheduler uiScheduler;
     public final MainRVAdapter rvAdapter;
     public final RecyclerView.LayoutManager layoutManager;
-    private final NewsRepository localRepo;
+    private final NewsLocalRepoImpl localRepo;
     private final MyConnectivityManager connectivityManager;
     @VisibleForTesting Disposable disposable;
     private final NewsRepository repository;
@@ -27,7 +36,7 @@ public class MainViewModel {
     public ObservableBoolean isLoading = new ObservableBoolean(true);
 
     MainViewModel(NewsRepository repository,
-                  NewsRepository localRepo,
+                  NewsLocalRepoImpl localRepo,
                   MyConnectivityManager connectivityManager,
                   RecyclerView.LayoutManager layoutManager,
                   MainRVAdapter rvAdapter,
@@ -54,13 +63,11 @@ public class MainViewModel {
 
     @VisibleForTesting
     void stopAnimation() {
-        Timber.i("stopAnimation");
         isLoading.set(false);
     }
 
     @VisibleForTesting
     void startAnimation() {
-        Timber.i("startAnimation");
         isLoading.set(true);
     }
 
@@ -68,13 +75,16 @@ public class MainViewModel {
         disposable = fetchNews().doOnSubscribe(disposable -> startAnimation())
                 .subscribeOn(bgScheduler)
                 .observeOn(uiScheduler)
-                .subscribe(this::handleSuccess, throwable -> {
+                .doOnSuccess(this::handleSuccess)
+                .flatMapCompletable(articles -> Observable.fromIterable(articles)
+                        .flatMapCompletable(localRepo::insertOrReplace))
+                .subscribe(Functions.EMPTY_ACTION, throwable -> {
                     Timber.e(throwable);
                     handleError();
                 });
     }
 
-    private Single<NewsResponse> fetchNews() {
+    private Single<List<Article>> fetchNews() {
         if (connectivityManager.isOnline()) {
             return repository.getNews();
         } else {
@@ -83,9 +93,9 @@ public class MainViewModel {
     }
 
     @VisibleForTesting
-    void handleSuccess(NewsResponse newsResponse) {
+    void handleSuccess(List<Article> articles) {
         stopAnimation();
         hasError.set(false);
-        rvAdapter.update(newsResponse.getArticles());
+        rvAdapter.update(articles);
     }
 }

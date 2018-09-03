@@ -2,10 +2,14 @@ package com.eric.mynews.repositories;
 
 import android.support.annotation.NonNull;
 
+import com.eric.mynews.models.Article;
 import com.eric.mynews.models.NewsResponse;
 import com.eric.mynews.rest.NewsApi;
 
+import java.util.List;
+
 import io.reactivex.Single;
+import io.reactivex.functions.Function;
 
 public class NewsRepositoryImpl implements NewsRepository {
     private final NewsApi api;
@@ -15,7 +19,8 @@ public class NewsRepositoryImpl implements NewsRepository {
     }
 
     @Override
-    public Single<NewsResponse> getNews() {
-        return api.getNews();
+    public Single<List<Article>> getNews() {
+        return api.getNews()
+                .map(NewsResponse::getArticles);
     }
 }
